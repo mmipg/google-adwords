@@ -127,6 +127,14 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
 	        for ( String name: customerIdMap.keySet() ) {
 	        	customerIds.addElement(name);
 	        }
+	        
+	        // Select default (first item)
+	        if ( 
+	        		(customerIds.getSelectedItem()== null || "".equals(customerIds.getSelectedItem())) 
+	        			&& customerIds.getSize() > 0 ) 
+	        {
+	        	customerIds.setSelectedItem(customerIds.getElementAt(0));
+	        }
 		}
     }
     
