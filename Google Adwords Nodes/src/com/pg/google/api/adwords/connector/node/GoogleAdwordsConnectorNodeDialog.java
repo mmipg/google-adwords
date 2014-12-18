@@ -43,6 +43,8 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
 	private JButton btnCustomerIds = new JButton("Get");
 	private JTextField txtCustomerId = new JTextField();
 	
+	private GoogleAdwordsConfiguration config = new GoogleAdwordsConfiguration();
+	
     /**
      * New pane for configuring the GoogleAdwordsConnector node.
      */
@@ -67,7 +69,8 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
 	protected void saveSettingsTo(NodeSettingsWO settings)
 			throws InvalidSettingsException {
 		
-		GoogleAdwordsConfiguration config = new GoogleAdwordsConfiguration();
+		if ( config == null ) return;
+		
 		config.setCustomerId( txtCustomerId.getText() );
 		config.save(settings);
 	}
@@ -86,12 +89,13 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
             throw new NotConfigurableException("Missing Google API Connection");
         }
         
-        GoogleAdwordsConfiguration config = new GoogleAdwordsConfiguration();
+        config = new GoogleAdwordsConfiguration();
         config.load(settings);
         
         txtCustomerId.setText(config.getCustomerId());
         
-        btnCustomerIds.addActionListener(new GetCustomerIds(connectionSpec.getGoogleApiConnection()));
+        if ( btnCustomerIds.getActionListeners().length == 0 )
+        	btnCustomerIds.addActionListener(new GetCustomerIds(connectionSpec.getGoogleApiConnection()));
         
 	}
 
