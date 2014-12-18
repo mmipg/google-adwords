@@ -1,0 +1,50 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GoogleAdwordsConnector-Node extension for KNIME Workbench
+Bundle-SymbolicName: com.pg.google.api.adwords.connector.node; singleton:=true
+Bundle-Version: 1.0.4
+Bundle-ClassPath: googleadwordsconnector.jar,
+ lib/adwords-axis-1.31.0.jar,
+ lib/ads-lib-1.31.0.jar,
+ lib/axis-1.4.jar,
+ lib/ads-lib-axis-1.31.0.jar,
+ lib/aopalliance-1.0.jar,
+ lib/commons-beanutils-1.8.3.jar,
+ lib/commons-codec-1.3.jar,
+ lib/commons-collections-3.2.1.jar,
+ lib/commons-configuration-1.7.jar,
+ lib/commons-digester-1.8.1.jar,
+ lib/commons-discovery-0.4.jar,
+ lib/commons-lang-2.5.jar,
+ lib/google-api-client-1.18.0-rc.jar,
+ lib/google-http-client-1.18.0-rc.jar,
+ lib/google-http-client-jackson2-1.18.0-rc.jar,
+ lib/google-oauth-client-1.18.0-rc.jar,
+ lib/guava-jdk5-17.0.jar,
+ lib/guice-3.0.jar,
+ lib/guice-assistedinject-3.0.jar,
+ lib/guice-multibindings-3.0.jar,
+ lib/httpclient-4.0.1.jar,
+ lib/httpcore-4.0.1.jar,
+ lib/jackson-core-2.1.3.jar,
+ lib/javax.inject-1.jar,
+ lib/jaxrpc-api-1.1.jar,
+ lib/joda-time-1.6.jar,
+ lib/jsr305-1.3.9.jar,
+ lib/log4j-1.2.16.jar,
+ lib/opencsv-1.8.jar,
+ lib/slf4j-api-1.7.7.jar,
+ lib/slf4j-log4j12-1.7.7.jar,
+ lib/wsdl4j-1.6.2.jar
+Bundle-Vendor: P&G, eBusiness
+Require-Bundle: org.eclipse.core.runtime,
+ org.knime.workbench.core,
+ org.knime.workbench.repository,
+ org.knime.base,
+ com.google.api;bundle-version="1.17.0",
+ com.pg.knime.foundation;bundle-version="1.0.2",
+ com.pg.knime.vault;bundle-version="1.0.1",
+ com.pg.google.analytics;bundle-version="1.0.16"
+Export-Package: com.pg.google.api.adwords.connector.node
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+
