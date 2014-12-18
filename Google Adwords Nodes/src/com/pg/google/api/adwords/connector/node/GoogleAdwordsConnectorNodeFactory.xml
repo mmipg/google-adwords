@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./default.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.8 http://knime.org/node/v2.8.xsd">
+    <name>Google Adwords Connector (P&amp;G)</name>
+    
+    <shortDescription>
+        Create a connection to the Google Adwords API.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>Create a connection to the Google Adwords API.</intro>
+                
+        <tab name="Settings">
+            <option name="Account Ids"> (optional) A list of all available customer accounts that could be used for connection.  Use "Get" button to populate.</option>
+            <option name="Account Id">The customer account ID that will be used for this connection.</option>
+        </tab>
+        
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Google API Connection">The Google API connection that will be used.</inPort>
+        <!-- possibly more input ports here-->
+        <outPort index="0" name="Google Adwords Connection">>A connection that can be used to
+			access the Google Adwords API.</outPort>
+        
+    </ports>    
+    
+</knimeNode>

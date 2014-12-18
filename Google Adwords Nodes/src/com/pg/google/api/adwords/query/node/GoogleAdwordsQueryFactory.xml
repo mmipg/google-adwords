@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./default.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.8 http://knime.org/node/v2.8.xsd">
+    <name>Google Adwords Query (P&amp;G)</name>
+    
+    <shortDescription>
+        Execute a query to retrieve reports from Adwords using the Google Adwords API.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>
+        	Execute a query to retrieve reports from Adwords using the Google Adwords API.
+        
+        	<p>
+			For details see: <a href="https://developers.google.com/adwords/api/docs/appendix/reports">Adwords Report Details</a>.
+			</p>
+        </intro>
+        
+        <tab name="Settings">
+            <option name="Report Type">
+	            The specific report to pull from Adwords.  
+	            Each report is comprised of potential dimensions and metrics that you can pull as part of the report depending on your specific needs.
+            </option>
+            <option name="Report Metrics">
+				The specific metrics desired as part of the report.
+			</option>
+            <option name="Start Date">
+            	Beginning date to retrieve data in format YYYY-MM-DD.
+			</option>
+            <option name="End Date">
+            	Final date to retrieve data in format YYYY-MM-DD.
+            </option>
+        </tab>
+        
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Google Adwords Connection">A connection to Google Adwords API.</inPort>
+        <!-- possibly more input ports here-->
+        <outPort index="0" name="Table">The resulting report table.</outPort>
+        <!-- possibly more output ports here-->
+    </ports>
+</knimeNode>
