@@ -3,6 +3,7 @@ package com.pg.api.adwords.connector.data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,7 @@ import com.google.api.client.util.Joiner;
 import com.google.common.collect.Lists;
 import com.pg.google.api.adwords.connector.node.GoogleAdwordsConfiguration;
 import com.pg.google.api.connector.data.GoogleApiConnection;
+import com.pg.knime.secure.DefaultVault;
 
 public class GoogleAdwordsConnection {
 
@@ -113,10 +115,22 @@ public class GoogleAdwordsConnection {
 		
 		Map<String, String> map = new HashMap<>();
 		
+		DefaultVault vault = new DefaultVault();
+		
+		try {
+			vault = (DefaultVault)Class.forName("com.pg.knime.vault.GoogleVault").newInstance();
+		} catch ( Exception exc ) {
+			LOGGER.info("Unable to load P&G Vault - using Defaults");
+		}
+		
+		String propFilePath = vault.getKey("ADWORDS_PROPERTY_PATH");
+		URL propFileURL = vault.getClass().getResource(propFilePath);
+		if (propFileURL == null ) propFileURL = GoogleAdwordsConnection.class.getResource("ads.properties"); // Adwords default
+		
 		AdWordsSession adwords = new AdWordsSession
 				.Builder()
 				.withOAuth2Credential(connection.getCredential())
-				.fromFile()
+				.fromFile(propFileURL)
 				.build();
 		
 		ManagedCustomerServiceInterface customerInterface = new AdWordsServices()
@@ -128,6 +142,7 @@ public class GoogleAdwordsConnection {
 		 for (ManagedCustomer customer : page.getEntries()) {
 			 // Ignore other MMCs
 			 if ( customer.getCanManageClients() ) continue;
+			 if ( "".equals(customer.getName()) ) continue;
 			  map.put(customer.getName(), customer.getCustomerId().toString());   
 		 }
 		
