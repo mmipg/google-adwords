@@ -111,7 +111,8 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			LOGGER.info("Attempt to retrieve customer account list");
+			LOGGER.info("Attempting to retrieve customer account list");
+			
 			try {
 				customerIdMap = GoogleAdwordsConnection.getCustomerAccounts(connection);
 				LOGGER.debug("Retrieved " + customerIdMap.size() + " items");
@@ -121,12 +122,12 @@ public class GoogleAdwordsConnectorNodeDialog extends StandardNodeDialogPane {
 				return;
 			}
 			
+			// Build drop-down list
 	        customerIds.removeAllElements();
 	        for ( String name: customerIdMap.keySet() ) {
 	        	customerIds.addElement(name);
 	        }
 		}
-    	
     }
     
     class SetAccountId implements ActionListener {
