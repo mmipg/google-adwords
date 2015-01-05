@@ -72,7 +72,7 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     	String[] reportArguments = reportDimensionBuffer.get(m_config.getReportTypeName());
     	
     	if ( reportArguments == null ) {
-    		com.google.api.ads.adwords.axis.v201402.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201402.cm.ReportDefinitionReportType.fromString(m_config.getReportTypeName());
+    		com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionReportType.fromString(m_config.getReportTypeName());
     		reportArguments = connection.getReportFields(rt);
     		reportDimensionBuffer.put(m_config.getReportTypeName(), reportArguments);
     	}
@@ -86,6 +86,9 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     			dtStart, 
     			dtEnd
     	);
+    	
+    	// Guard statement: failed report download
+    	if ( reportReader == null ) throw new CanceledExecutionException("Unable to download report");
     	
     	CSVReader csvReader = new CSVReader(reportReader);
     	String row[] = csvReader.readNext(); // Get rid of the Report Title Row
@@ -185,9 +188,20 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     }
     
     private DataTableSpec createSpec( String[] columnRow ) {
+    	
+    	if ( columnRow == null ) return null;
+    	
+    	List<String> processedColumns = new ArrayList<String>();
+    	
     	List<DataColumnSpec> colSpecs = new ArrayList<DataColumnSpec>(columnRow.length);
     	for ( String column : columnRow ) {
+    		
+    		if ( processedColumns.contains(column) )
+    			column = column + " (2)";
+    		
     		colSpecs.add(new DataColumnSpecCreator(column, StringCell.TYPE).createSpec());
+    		
+    		processedColumns.add(column);
     	}
     	
     	return new DataTableSpec(colSpecs.toArray(new DataColumnSpec[colSpecs.size()]));

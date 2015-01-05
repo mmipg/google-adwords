@@ -23,24 +23,24 @@ import org.knime.core.node.ModelContentWO;
 import org.knime.core.node.NodeLogger;
 
 import com.google.api.ads.adwords.axis.factory.AdWordsServices;
-import com.google.api.ads.adwords.lib.jaxb.v201402.DateRange;
-import com.google.api.ads.adwords.lib.jaxb.v201402.ReportDefinitionReportType;
-import com.google.api.ads.adwords.lib.jaxb.v201402.Selector;
-import com.google.api.ads.adwords.axis.v201402.cm.ApiException;
-import com.google.api.ads.adwords.axis.v201402.mcm.ManagedCustomer;
-import com.google.api.ads.adwords.axis.v201402.mcm.ManagedCustomerPage;
-import com.google.api.ads.adwords.axis.v201402.mcm.ManagedCustomerServiceInterface;
-import com.google.api.ads.adwords.axis.v201402.cm.ReportDefinitionField;
-import com.google.api.ads.adwords.axis.v201402.cm.ReportDefinitionServiceInterface;
+import com.google.api.ads.adwords.lib.jaxb.v201409.DateRange;
+import com.google.api.ads.adwords.lib.jaxb.v201409.ReportDefinitionReportType;
+import com.google.api.ads.adwords.lib.jaxb.v201409.Selector;
+import com.google.api.ads.adwords.axis.v201409.cm.ApiException;
+import com.google.api.ads.adwords.axis.v201409.mcm.ManagedCustomer;
+import com.google.api.ads.adwords.axis.v201409.mcm.ManagedCustomerPage;
+import com.google.api.ads.adwords.axis.v201409.mcm.ManagedCustomerServiceInterface;
+import com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionField;
+import com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionServiceInterface;
 import com.google.api.ads.adwords.lib.client.AdWordsSession;
-import com.google.api.ads.adwords.lib.jaxb.v201402.DownloadFormat;
-import com.google.api.ads.adwords.lib.jaxb.v201402.ReportDefinition;
-import com.google.api.ads.adwords.lib.jaxb.v201402.ReportDefinitionDateRangeType;
+import com.google.api.ads.adwords.lib.jaxb.v201409.DownloadFormat;
+import com.google.api.ads.adwords.lib.jaxb.v201409.ReportDefinition;
+import com.google.api.ads.adwords.lib.jaxb.v201409.ReportDefinitionDateRangeType;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponse;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponseException;
 import com.google.api.ads.adwords.lib.utils.ReportException;
-import com.google.api.ads.adwords.lib.utils.v201402.DetailedReportDownloadResponseException;
-import com.google.api.ads.adwords.lib.utils.v201402.ReportDownloader;
+import com.google.api.ads.adwords.lib.utils.v201409.DetailedReportDownloadResponseException;
+import com.google.api.ads.adwords.lib.utils.v201409.ReportDownloader;
 import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
 import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.util.Joiner;
@@ -72,13 +72,29 @@ public class GoogleAdwordsConnection {
 		adwords = new AdWordsSession
 					.Builder()
 					.withOAuth2Credential(connection.getCredential())
-					.fromFile()
+					.fromFile(GetPropertiesFileUrl())
 					.build();
 		
-		LOGGER.info("Setting customer ID to: " + customerId);
+		LOGGER.debug("Setting customer ID to: " + customerId);
 		
 		adwords.setClientCustomerId(customerId);
 	
+	}
+	
+	private static URL GetPropertiesFileUrl() {
+		DefaultVault vault = new DefaultVault();
+		
+		try {
+			vault = (DefaultVault)Class.forName("com.pg.knime.vault.GoogleVault").newInstance();
+		} catch ( Exception exc ) {
+			LOGGER.info("Unable to load P&G Vault - using Defaults");
+		}
+		
+		String propFilePath = vault.getKey("ADWORDS_PROPERTY_PATH");
+		URL propFileURL = vault.getClass().getResource(propFilePath);
+		if (propFileURL == null ) propFileURL = GoogleAdwordsConnection.class.getResource("ads.properties"); // Adwords default
+		
+		return propFileURL;
 	}
 	
 	public void setExecContext ( ExecutionContext context ) {
@@ -115,27 +131,15 @@ public class GoogleAdwordsConnection {
 		
 		Map<String, String> map = new HashMap<>();
 		
-		DefaultVault vault = new DefaultVault();
-		
-		try {
-			vault = (DefaultVault)Class.forName("com.pg.knime.vault.GoogleVault").newInstance();
-		} catch ( Exception exc ) {
-			LOGGER.info("Unable to load P&G Vault - using Defaults");
-		}
-		
-		String propFilePath = vault.getKey("ADWORDS_PROPERTY_PATH");
-		URL propFileURL = vault.getClass().getResource(propFilePath);
-		if (propFileURL == null ) propFileURL = GoogleAdwordsConnection.class.getResource("ads.properties"); // Adwords default
-		
 		AdWordsSession adwords = new AdWordsSession
 				.Builder()
 				.withOAuth2Credential(connection.getCredential())
-				.fromFile(propFileURL)
+				.fromFile(GetPropertiesFileUrl())
 				.build();
 		
 		ManagedCustomerServiceInterface customerInterface = new AdWordsServices()
 																	.get(adwords, ManagedCustomerServiceInterface.class);
-		com.google.api.ads.adwords.axis.v201402.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201402.cm.Selector();
+		com.google.api.ads.adwords.axis.v201409.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201409.cm.Selector();
 		mcSelector.setFields(new String[] {"CustomerId", "Name", "CanManageClients"} );
 		
 		ManagedCustomerPage page = customerInterface.get(mcSelector);
@@ -199,13 +203,21 @@ public class GoogleAdwordsConnection {
 	    		
 	 	    } catch ( ReportDownloadResponseException | ReportException exc ) {
 	 	    	errorMessage = exc.getMessage();
-	 	    	LOGGER.warn(exc.getMessage());
-	 	    	LOGGER.warn(exc.getCause());
+	 	    	LOGGER.debug(exc.getMessage());
+	 	    	LOGGER.debug(exc.getCause());
 	 	    	
 	 	    	if ( exc instanceof DetailedReportDownloadResponseException ) {
-	 	    		 LOGGER.warn(((DetailedReportDownloadResponseException)exc).getErrorText());
+	 	    		 LOGGER.debug(((DetailedReportDownloadResponseException)exc).getErrorText());
 	 	    		 LOGGER.warn(((DetailedReportDownloadResponseException)exc).getType());
 	 	    		 LOGGER.warn(((DetailedReportDownloadResponseException)exc).getTrigger());
+	 	    		 
+	 	    		 if ( "ReportDefinitionError.INVALID_FIELD_NAME_FOR_REPORT".equals(((DetailedReportDownloadResponseException)exc).getType()) ) {
+	 	    			 try {
+	 	    				 diagnoseConflict( fields, ((DetailedReportDownloadResponseException)exc).getTrigger()); 
+	 	    			 } catch ( Exception ex ) {
+	 	    				 // Do nothing
+	 	    			 }
+	 	    		 }
 	 	    		 
 	 	    		 // No use re-trying, issue with report request
 	 	    		 return reportReader;
@@ -235,11 +247,21 @@ public class GoogleAdwordsConnection {
 		return reportReader;
 	}
 	
+	private void diagnoseConflict(String[] fields, String trigger ) {
+		String[] conflictFields = trigger.substring(trigger.indexOf("and ")+4).split(",");
+		for ( String field: fields ) {
+			for ( String conflict: conflictFields ) 
+				if ( field.toLowerCase().equals(conflict.toLowerCase())) {
+					LOGGER.warn("Likely issue with: " + conflict );
+				}
+		}
+	}
+	
 	public BufferedReader fetchReport( ReportDefinitionReportType reportType, String[] fields, Date startDate, Date endDate ) throws Exception {
 		return fetchReport(reportType, fields, this.customerId, startDate, endDate);
 	}
 	
-	public String[] getReportFields(com.google.api.ads.adwords.axis.v201402.cm.ReportDefinitionReportType reportType) {
+	public String[] getReportFields(com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionReportType reportType) {
 		
 		
 		String[] fieldNames = new String[0];
@@ -268,5 +290,16 @@ public class GoogleAdwordsConnection {
         connection.save(model);
         model.addString(GoogleAdwordsConfiguration.CFG_CUSTOMER_ID, customerId);
     }
-	
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Customer ID:\n" + customerId + "\n\n");
+        sb.append("API Version: 201409");
+        return sb.toString();
+    }
+    
 }
