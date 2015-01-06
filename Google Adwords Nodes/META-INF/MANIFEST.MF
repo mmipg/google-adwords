@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: P&G Google Adwords Nodes for KNIME Workbench
 Bundle-SymbolicName: com.pg.google.adwords;singleton:=true
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Bundle-ClassPath: googleadwordsconnector.jar,
  lib/ads-lib-1.36.0.jar,
  lib/ads-lib-axis-1.36.0.jar,
@@ -46,7 +46,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.api;bundle-version="1.17.0",
  com.pg.knime.foundation;bundle-version="1.0.2",
  com.pg.google.analytics;bundle-version="1.0.16",
- com.pg.knime.vault;bundle-version="1.0.1"
+ com.pg.knime.vault;bundle-version="1.0.2"
 Export-Package: com.pg.google.api.adwords.connector.node
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

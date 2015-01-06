@@ -16,12 +16,21 @@
 
    <extension
          point="org.knime.workbench.repository.categories">
+
+      <!-- Google Category -->
+      <category
+            icon="icons/google-icon.png"
+            level-id="google"
+            locked="false"
+            name="Google"
+            path="/pg/">
+      </category>
          
        <!-- Google Adwords Category -->
       <category
             icon="icons/gadwords-icon.png"
             level-id="gadwords"
-            locked="true"
+            locked="false"
             name="Google Adwords"
             path="/pg/google/">
       </category>
