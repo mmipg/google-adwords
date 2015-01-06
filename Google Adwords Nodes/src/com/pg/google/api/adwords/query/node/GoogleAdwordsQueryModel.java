@@ -210,6 +210,9 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     }
     
     private void checkArguments(String[] validArguments, String[] reportArguments ) throws InvalidSettingsException {
+    	// Issue with cache?
+    	if ( validArguments == null || validArguments.length == 0 ) return;
+    	
     	for ( String argument: reportArguments ) {
     		checkArgument(validArguments, argument);
     	}
