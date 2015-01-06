@@ -1,5 +1,9 @@
-Google Adword Nodes
+Google Adwords Nodes
 ====
+Enables connectivity to Google Adwords to access standard Adwords reporting outlined here: 
+https://developers.google.com/adwords/api/docs/appendix/reports
+
+Includes libs and support for Adwords API v201409
 
 KNIME
 ====
