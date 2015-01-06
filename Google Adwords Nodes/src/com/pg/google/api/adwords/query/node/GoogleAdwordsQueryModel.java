@@ -64,6 +64,8 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
     	
     	GoogleAdwordsConnection connection = ((GoogleAdwordsConnectionPortObject)inObjects[0]).getGoogleAdwordsConnection();
+    	connection.setExecContext(exec);
+    	
     	Date dtStart = SIPNNER_DATERANGE_FORMATTER.parse(m_config.getStartDate());
     	Date dtEnd = SIPNNER_DATERANGE_FORMATTER.parse(m_config.getEndDate());
     	
