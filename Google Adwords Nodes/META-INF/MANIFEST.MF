@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GoogleAdwordsConnector-Node extension for KNIME Workbench
-Bundle-SymbolicName: com.pg.google.api.adwords.connector.node; singleton:=true
+Bundle-Name: P&G Google Adwords Nodes for KNIME Workbench
+Bundle-SymbolicName: com.pg.google.adwords;singleton:=true
 Bundle-Version: 1.0.4
 Bundle-ClassPath: googleadwordsconnector.jar,
  lib/ads-lib-1.36.0.jar,
@@ -38,7 +38,7 @@ Bundle-ClassPath: googleadwordsconnector.jar,
  lib/slf4j-api-1.7.7.jar,
  lib/slf4j-log4j12-1.7.7.jar,
  lib/wsdl4j-1.6.2.jar
-Bundle-Vendor: P&G, eBusiness
+Bundle-Vendor: Procter & Gamble, eBusiness Analytics
 Require-Bundle: org.eclipse.core.runtime,
  org.knime.workbench.core,
  org.knime.workbench.repository,
