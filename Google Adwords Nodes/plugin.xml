@@ -5,13 +5,27 @@
    <extension
          point="org.knime.workbench.repository.nodes">
       <node
-            category-path="/pgdev"
+            category-path="/pg/google/gadwords"
             factory-class="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"
             id="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"/>
        <node
-            category-path="/pgdev"
+            category-path="/pg/google/gadwords"
             factory-class="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"
             id="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"/>      
+   </extension>
+
+   <extension
+         point="org.knime.workbench.repository.categories">
+         
+       <!-- Google Adwords Category -->
+      <category
+            icon="icons/gadwords-icon.png"
+            level-id="gadwords"
+            locked="true"
+            name="Google Adwords"
+            path="/pg/google/">
+      </category>
+      
    </extension>
 
 </plugin>
