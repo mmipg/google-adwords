@@ -60,8 +60,10 @@ public class AccountListNodeModel extends NodeModel {
         	String id = accountMap.get(name);
         	
         	List<DataCell> cells = new ArrayList<DataCell>(outSpec.getNumColumns());
-        	cells.add(new StringCell(name));
+
         	cells.add(new StringCell(id));
+        	cells.add(new StringCell(name));
+
         	outContainer.addRowToTable(new DefaultRow("Row" + row++, cells));
         }
         

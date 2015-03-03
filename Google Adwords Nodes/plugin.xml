@@ -1,38 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
-<plugin>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?><plugin>
    
-   <extension
-         point="org.knime.workbench.repository.nodes">
-      <node
-            category-path="/pg/google/gadwords"
-            factory-class="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"
-            id="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"/>
-       <node
-            category-path="/pg/google/gadwords"
-            factory-class="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"
-            id="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"/>      
-   </extension>
+   <extension point="org.knime.workbench.repository.nodes">
+      <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory" id="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"/>
+       <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory" id="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"/>      
+   	   <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.accountlist.node.AccountListNodeFactory" id="com.pg.google.api.adwords.accountlist.node.AccountListNodeFactory"/>
+</extension>
 
-   <extension
-         point="org.knime.workbench.repository.categories">
+   <extension point="org.knime.workbench.repository.categories">
 
       <!-- Google Category -->
-      <category
-            icon="icons/google-icon.png"
-            level-id="google"
-            locked="false"
-            name="Google"
-            path="/pg/">
+      <category icon="icons/google-icon.png" level-id="google" locked="false" name="Google" path="/pg/">
       </category>
          
        <!-- Google Adwords Category -->
-      <category
-            icon="icons/gadwords-icon.png"
-            level-id="gadwords"
-            locked="false"
-            name="Google Adwords"
-            path="/pg/google/">
+      <category icon="icons/gadwords-icon.png" level-id="gadwords" locked="false" name="Google Adwords" path="/pg/google/">
       </category>
       
    </extension>
