@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: P&G Google Adwords Nodes for KNIME Workbench
 Bundle-SymbolicName: com.pg.google.adwords;singleton:=true
-Bundle-Version: 1.0.9
+Bundle-Version: 1.0.10
 Bundle-ClassPath: googleadwordsconnector.jar,
  lib/ads-lib-1.36.0.jar,
  lib/ads-lib-axis-1.36.0.jar,
