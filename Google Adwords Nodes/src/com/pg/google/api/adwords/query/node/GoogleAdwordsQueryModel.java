@@ -74,7 +74,7 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     	String[] reportArguments = reportDimensionBuffer.get(m_config.getReportTypeName());
     	
     	if ( reportArguments == null ) {
-    		com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201409.cm.ReportDefinitionReportType.fromString(m_config.getReportTypeName());
+    		com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionReportType.fromString(m_config.getReportTypeName());
     		reportArguments = connection.getReportFields(rt);
     		reportDimensionBuffer.put(m_config.getReportTypeName(), reportArguments);
     	}
