@@ -95,9 +95,9 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
 					.add("Report Type", cbxReportTypes, btnLink)
 					.add( null, lblReportDescription )
 					.add(new LabelComponentPair("Report Metrics", new JScrollPane(txtMetrics), btnMetrics, true))
-					.add ("Use Dates", chkUseDates )
 					.add( "Start Date", spnStartDate )
 					.add( "End Date", spnEndDate )
+					.add ("Use Dates", chkUseDates )
 					.build()
 			)
 		);
