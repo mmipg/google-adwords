@@ -158,7 +158,7 @@ public class GoogleAdwordsConnection {
 		BufferedReader reportReader = null;
 		
 		// Guard statement
-		if ( reportType == null || fields == null || fields.length == 0 || startDate == null || endDate == null || StringUtils.isEmpty(customerId) ) { 
+		if ( reportType == null || fields == null || fields.length == 0 || StringUtils.isEmpty(customerId) ) { 
 			throw new InvalidSettingsException("Invalid arguments provided for fetching Adwords report");
 		}
 		
@@ -169,6 +169,11 @@ public class GoogleAdwordsConnection {
 		Selector selector = new Selector();
 		selector.getFields().addAll( Lists.newArrayList(fields) );
 		
+		
+		// Get report
+		ReportDefinition reportDefinition = new ReportDefinition();
+			    
+		
 		// Set report date range
 		if ( startDate != null && endDate !=null ) {
 			DateRange dateRange = new DateRange();
@@ -176,12 +181,13 @@ public class GoogleAdwordsConnection {
 			dateRange.setMax(ADWORDS_DATERANGE_FORMATTER.format(endDate));
 			selector.setDateRange(dateRange);
 			selector.setDateRange(dateRange);
+			
+			reportDefinition.setDateRangeType(ReportDefinitionDateRangeType.CUSTOM_DATE);
+		} else {
+			reportDefinition.setDateRangeType(ReportDefinitionDateRangeType.ALL_TIME);
 		}
 		
-		// Get report
-		ReportDefinition reportDefinition = new ReportDefinition();
-	    reportDefinition.setReportName(reportType.toString() + " report for " + customerId + " at: " + System.currentTimeMillis());
-	    reportDefinition.setDateRangeType(ReportDefinitionDateRangeType.CUSTOM_DATE);
+		reportDefinition.setReportName(reportType.toString() + " report for " + customerId + " at: " + System.currentTimeMillis());
 	    reportDefinition.setReportType(reportType);
 	    reportDefinition.setDownloadFormat(DownloadFormat.GZIPPED_CSV);
 	    reportDefinition.setIncludeZeroImpressions(false); // Enable to allow rows with zero impressions to show.
@@ -197,7 +203,12 @@ public class GoogleAdwordsConnection {
 	    	if ( isCanceled() ) return reportReader;
 	    	
 	    	 try {
-	    		 LOGGER.info("Fetching report from: " + ADWORDS_DATERANGE_FORMATTER.format(startDate) + " to " + ADWORDS_DATERANGE_FORMATTER.format(endDate));
+	    		 if ( startDate != null && endDate !=null ) {
+	    			 LOGGER.info("Fetching report from: " + ADWORDS_DATERANGE_FORMATTER.format(startDate) + " to " + ADWORDS_DATERANGE_FORMATTER.format(endDate));
+	    		 } else {
+	    			 LOGGER.info("Fetching report with no date range");
+	    		 }
+	    		 
 	    		 LOGGER.info("Fetching report for customer ID: " + customerId);
 	    		 LOGGER.info("Fetching fields: " + Joiner.on(',').join(Arrays.asList(fields)));
 	    			
