@@ -69,6 +69,11 @@ public class GoogleAdwordsQueryModel extends NodeModel {
     	Date dtStart = SIPNNER_DATERANGE_FORMATTER.parse(m_config.getStartDate());
     	Date dtEnd = SIPNNER_DATERANGE_FORMATTER.parse(m_config.getEndDate());
     	
+    	if ( !m_config.getUseDates() ) {
+    		dtStart = null;
+    		dtEnd = null;
+    	}
+    	
     	// GUARD STATEMENT: Check to make sure argument is valid
     	
     	String[] reportArguments = reportDimensionBuffer.get(m_config.getReportTypeName());

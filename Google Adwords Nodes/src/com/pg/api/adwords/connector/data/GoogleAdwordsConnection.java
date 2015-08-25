@@ -170,11 +170,13 @@ public class GoogleAdwordsConnection {
 		selector.getFields().addAll( Lists.newArrayList(fields) );
 		
 		// Set report date range
-		DateRange dateRange = new DateRange();
-		dateRange.setMin(ADWORDS_DATERANGE_FORMATTER.format(startDate));
-		dateRange.setMax(ADWORDS_DATERANGE_FORMATTER.format(endDate));
-		selector.setDateRange(dateRange);
-		selector.setDateRange(dateRange);
+		if ( startDate != null && endDate !=null ) {
+			DateRange dateRange = new DateRange();
+			dateRange.setMin(ADWORDS_DATERANGE_FORMATTER.format(startDate));
+			dateRange.setMax(ADWORDS_DATERANGE_FORMATTER.format(endDate));
+			selector.setDateRange(dateRange);
+			selector.setDateRange(dateRange);
+		}
 		
 		// Get report
 		ReportDefinition reportDefinition = new ReportDefinition();

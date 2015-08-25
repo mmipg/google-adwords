@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,6 +47,7 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
 	private SortedComboBoxModel<String> cbmReportTypes = new SortedComboBoxModel<>();
 	private JTextArea txtMetrics = new JTextArea();
 	private JLabel lblReportDescription = new JLabel();
+	private JCheckBox chkUseDates = new JCheckBox();
 	private JSpinner spnStartDate = new JSpinner(new SpinnerDateModel());
 	private JSpinner spnEndDate = new JSpinner(new SpinnerDateModel());
 	
@@ -81,6 +83,8 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
     	btnLink.addActionListener(new MetricLinkListener());
     	
     	// Spinner Setups
+    	chkUseDates.setSelected(true);
+    	chkUseDates.addActionListener(new UseDatesActionListener());
     	spnStartDate.setEditor(new JSpinner.DateEditor(spnStartDate, DATE_FORMAT));
     	spnEndDate.setEditor(new JSpinner.DateEditor(spnEndDate, DATE_FORMAT));
     	
@@ -91,6 +95,7 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
 					.add("Report Type", cbxReportTypes, btnLink)
 					.add( null, lblReportDescription )
 					.add(new LabelComponentPair("Report Metrics", new JScrollPane(txtMetrics), btnMetrics, true))
+					.add ("Use Dates", chkUseDates )
 					.add( "Start Date", spnStartDate )
 					.add( "End Date", spnEndDate )
 					.build()
@@ -131,6 +136,8 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
     	String sEndDate = ((JSpinner.DefaultEditor)spnEndDate.getEditor()).getTextField().getText();
     	config.setEndDate(sEndDate);
     	
+    	config.setUseDates(chkUseDates.isSelected());
+    	
     	config.save(settings);
     }
 
@@ -148,7 +155,6 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
     	}
     	
 
-    	
     	GoogleAdwordsQueryConfiguration config = new GoogleAdwordsQueryConfiguration();
     	config.load(settings);
     	
@@ -158,6 +164,9 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
     	if ( config.getReportTypeName() != null )
     		cbmReportTypes.setSelectedItem(config.getReportTypeName());
     	
+    	if ( config.getUseDates() != null ) {
+    		chkUseDates.setSelected(config.getUseDates());
+    	}
     	
     	try {
     		if ( config.getStartDate() != null )
@@ -254,6 +263,16 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
 				description = "Unknown Report";
 			
 			lblReportDescription.setText("<html><p>" + description + "</p></html>");
+		}
+    	
+    }
+    
+    class UseDatesActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			spnEndDate.setEnabled(chkUseDates.isSelected());
+			spnStartDate.setEnabled(chkUseDates.isSelected());
 		}
     	
     }
