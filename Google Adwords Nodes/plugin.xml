@@ -18,5 +18,15 @@
       </category>
       
    </extension>
+   
+   <extension point="org.knime.core.PortType">
+	   	<portType
+	          name="Google Adwords Connection PortType" 
+	          objectClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject"
+	          objectSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject$Serializer"
+	          specClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec"
+	          specSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec$Serializer">
+	   	</portType>
+	 </extension>
 
 </plugin>
