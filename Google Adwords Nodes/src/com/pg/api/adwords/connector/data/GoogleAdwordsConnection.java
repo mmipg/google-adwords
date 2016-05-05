@@ -23,24 +23,24 @@ import org.knime.core.node.ModelContentWO;
 import org.knime.core.node.NodeLogger;
 
 import com.google.api.ads.adwords.axis.factory.AdWordsServices;
-import com.google.api.ads.adwords.lib.jaxb.v201502.DateRange;
-import com.google.api.ads.adwords.lib.jaxb.v201502.ReportDefinitionReportType;
-import com.google.api.ads.adwords.lib.jaxb.v201502.Selector;
-import com.google.api.ads.adwords.axis.v201502.cm.ApiException;
-import com.google.api.ads.adwords.axis.v201502.mcm.ManagedCustomer;
-import com.google.api.ads.adwords.axis.v201502.mcm.ManagedCustomerPage;
-import com.google.api.ads.adwords.axis.v201502.mcm.ManagedCustomerServiceInterface;
-import com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionField;
-import com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionServiceInterface;
+import com.google.api.ads.adwords.lib.jaxb.v201603.DateRange;
+import com.google.api.ads.adwords.lib.jaxb.v201603.ReportDefinitionReportType;
+import com.google.api.ads.adwords.lib.jaxb.v201603.Selector;
+import com.google.api.ads.adwords.axis.v201603.cm.ApiException;
+import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomer;
+import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomerPage;
+import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomerServiceInterface;
+import com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionField;
+import com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionServiceInterface;
 import com.google.api.ads.adwords.lib.client.AdWordsSession;
-import com.google.api.ads.adwords.lib.jaxb.v201502.DownloadFormat;
-import com.google.api.ads.adwords.lib.jaxb.v201502.ReportDefinition;
-import com.google.api.ads.adwords.lib.jaxb.v201502.ReportDefinitionDateRangeType;
+import com.google.api.ads.adwords.lib.jaxb.v201603.DownloadFormat;
+import com.google.api.ads.adwords.lib.jaxb.v201603.ReportDefinition;
+import com.google.api.ads.adwords.lib.jaxb.v201603.ReportDefinitionDateRangeType;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponse;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponseException;
 import com.google.api.ads.adwords.lib.utils.ReportException;
-import com.google.api.ads.adwords.lib.utils.v201502.DetailedReportDownloadResponseException;
-import com.google.api.ads.adwords.lib.utils.v201502.ReportDownloader;
+import com.google.api.ads.adwords.lib.utils.v201603.DetailedReportDownloadResponseException;
+import com.google.api.ads.adwords.lib.utils.v201603.ReportDownloader;
 import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
 import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.util.Joiner;
@@ -139,7 +139,7 @@ public class GoogleAdwordsConnection {
 		
 		ManagedCustomerServiceInterface customerInterface = new AdWordsServices()
 																	.get(adwords, ManagedCustomerServiceInterface.class);
-		com.google.api.ads.adwords.axis.v201502.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201502.cm.Selector();
+		com.google.api.ads.adwords.axis.v201603.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201603.cm.Selector();
 		mcSelector.setFields(new String[] {"CustomerId", "Name", "CanManageClients"} );
 		
 		ManagedCustomerPage page = customerInterface.get(mcSelector);
@@ -190,7 +190,7 @@ public class GoogleAdwordsConnection {
 		reportDefinition.setReportName(reportType.toString() + " report for " + customerId + " at: " + System.currentTimeMillis());
 	    reportDefinition.setReportType(reportType);
 	    reportDefinition.setDownloadFormat(DownloadFormat.GZIPPED_CSV);
-	    reportDefinition.setIncludeZeroImpressions(false); // Enable to allow rows with zero impressions to show.
+	    //reportDefinition.setIncludeZeroImpressions(false); // Enable to allow rows with zero impressions to show.
 	    reportDefinition.setSelector(selector);
 		
 	    // Attempt report download
@@ -274,7 +274,7 @@ public class GoogleAdwordsConnection {
 		return fetchReport(reportType, fields, this.customerId, startDate, endDate);
 	}
 	
-	public String[] getReportFields(com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionReportType reportType) {
+	public String[] getReportFields(com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionReportType reportType) {
 		
 		
 		String[] fieldNames = new String[0];

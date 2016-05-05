@@ -30,7 +30,7 @@ import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.port.PortObjectSpec;
 
-import com.google.api.ads.adwords.lib.jaxb.v201502.ReportDefinitionReportType;
+import com.google.api.ads.adwords.lib.jaxb.v201603.ReportDefinitionReportType;
 import com.google.common.base.Joiner;
 import com.pg.api.adwords.connector.data.GoogleAdwordsConnection;
 import com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec;
@@ -235,7 +235,7 @@ public class GoogleAdwordsQueryDialog extends StandardNodeDialogPane {
 			// Load Report fields
     		if ( connection != null && ( fieldNames == null || fieldNames.length == 0) ) {
     			
-    			com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201502.cm.ReportDefinitionReportType.fromString(reportName);
+    			com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionReportType rt = com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionReportType.fromString(reportName);
     			reportFields.put(reportName, connection.getReportFields(rt));
     			fieldNames = reportFields.get(reportName);
     		}
