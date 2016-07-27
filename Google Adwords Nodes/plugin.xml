@@ -5,6 +5,7 @@
       <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory" id="com.pg.google.api.adwords.connector.node.GoogleAdwordsConnectorNodeFactory"/>
        <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory" id="com.pg.google.api.adwords.query.node.GoogleAdwordsQueryFactory"/>      
    	   <node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.accountlist.node.AccountListNodeFactory" id="com.pg.google.api.adwords.accountlist.node.AccountListNodeFactory"/>
+		<node category-path="/pg/google/gadwords" factory-class="com.pg.google.api.adwords.keywordstats.node.KeywordStatsNodeFactory" id="com.pg.google.api.adwords.keywordstats.node.KeywordStatsNodeFactory"/>
 </extension>
 
    <extension point="org.knime.workbench.repository.categories">
@@ -20,12 +21,7 @@
    </extension>
    
    <extension point="org.knime.core.PortType">
-	   	<portType
-	          name="Google Adwords Connection PortType" 
-	          objectClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject"
-	          objectSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject$Serializer"
-	          specClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec"
-	          specSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec$Serializer">
+	   	<portType name="Google Adwords Connection PortType" objectClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject" objectSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObject$Serializer" specClass="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec" specSerializer="com.pg.api.adwords.connector.data.GoogleAdwordsConnectionPortObjectSpec$Serializer">
 	   	</portType>
 	 </extension>
 

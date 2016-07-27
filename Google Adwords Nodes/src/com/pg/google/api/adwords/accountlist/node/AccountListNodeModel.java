@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -18,6 +19,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
@@ -36,6 +38,8 @@ import com.pg.google.api.connector.data.GoogleApiConnectionPortObject;
  */
 public class AccountListNodeModel extends NodeModel {
     
+	private static final NodeLogger LOGGER = NodeLogger.getLogger(AccountListNodeModel.class);
+	
     /**
      * Constructor for the node model.
      */
@@ -50,7 +54,14 @@ public class AccountListNodeModel extends NodeModel {
     		throws Exception {
 
     	GoogleApiConnectionPortObject apiConnection = (GoogleApiConnectionPortObject)inObjects[0];
-    	Map<String, String> accountMap = GoogleAdwordsConnection.getCustomerAccounts(apiConnection.getGoogleApiConnection());
+    	Map<String, String> accountMap = new HashedMap();
+    	
+    	try {
+    		accountMap = GoogleAdwordsConnection.getCustomerAccounts(apiConnection.getGoogleApiConnection());
+    	} catch ( Exception exc ) {
+    		LOGGER.error(exc.getMessage());
+    		throw exc;
+    	}
     	
     	DataTableSpec outSpec = createSpec();
         BufferedDataContainer outContainer = exec.createDataContainer(outSpec);

@@ -27,9 +27,18 @@ import com.google.api.ads.adwords.lib.jaxb.v201603.DateRange;
 import com.google.api.ads.adwords.lib.jaxb.v201603.ReportDefinitionReportType;
 import com.google.api.ads.adwords.lib.jaxb.v201603.Selector;
 import com.google.api.ads.adwords.axis.v201603.cm.ApiException;
+import com.google.api.ads.adwords.axis.v201603.cm.Paging;
 import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomer;
 import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomerPage;
 import com.google.api.ads.adwords.axis.v201603.mcm.ManagedCustomerServiceInterface;
+import com.google.api.ads.adwords.axis.v201603.o.AttributeType;
+import com.google.api.ads.adwords.axis.v201603.o.IdeaType;
+import com.google.api.ads.adwords.axis.v201603.o.RelatedToQuerySearchParameter;
+import com.google.api.ads.adwords.axis.v201603.o.RequestType;
+import com.google.api.ads.adwords.axis.v201603.o.SearchParameter;
+import com.google.api.ads.adwords.axis.v201603.o.TargetingIdeaPage;
+import com.google.api.ads.adwords.axis.v201603.o.TargetingIdeaSelector;
+import com.google.api.ads.adwords.axis.v201603.o.TargetingIdeaServiceInterface;
 import com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionField;
 import com.google.api.ads.adwords.axis.v201603.cm.ReportDefinitionServiceInterface;
 import com.google.api.ads.adwords.lib.client.AdWordsSession;
@@ -313,6 +322,55 @@ public class GoogleAdwordsConnection {
         sb.append("Customer ID:\n" + customerId + "\n\n");
         sb.append("API Version: 201409");
         return sb.toString();
+    }
+    
+
+    
+    public static TargetingIdeaPage getKeywordStats(final GoogleApiConnection connection, String[] keywords) throws ValidationException, ConfigurationLoadException {
+    	
+    	AdWordsSession adwords = new AdWordsSession
+				.Builder()
+				.withOAuth2Credential(connection.getCredential())
+				.fromFile(GetPropertiesFileUrl())
+				.build();
+    	
+    	TargetingIdeaServiceInterface serviceInterface = new AdWordsServices().get(adwords, TargetingIdeaServiceInterface.class);
+    	
+    	
+    	TargetingIdeaSelector selector = new TargetingIdeaSelector();
+    	selector.setRequestType(RequestType.STATS);
+    	
+    	selector.setIdeaType(IdeaType.KEYWORD);
+    	
+    	selector.setRequestedAttributeTypes(new AttributeType[] {
+    	    AttributeType.KEYWORD_TEXT,
+    	    AttributeType.SEARCH_VOLUME,
+    	    AttributeType.AVERAGE_CPC,
+    	    AttributeType.COMPETITION
+    	});
+    	
+    	RelatedToQuerySearchParameter relatedToQuerySearchParameter = new RelatedToQuerySearchParameter();
+    	relatedToQuerySearchParameter.setQueries( keywords );
+    			
+    	selector.setSearchParameters(
+    	    new SearchParameter[] {relatedToQuerySearchParameter});
+
+    	selector.setPaging(new Paging(0, 100));
+    	
+    	TargetingIdeaPage resultsPage = null;
+		
+    	
+    	try {
+			resultsPage = serviceInterface.get(selector);
+			
+		} catch (ApiException e) {
+			LOGGER.error(e.getMessage());
+		} catch (RemoteException e) {
+			LOGGER.error(e.getMessage());
+		}
+    	
+    	
+    	return resultsPage;
     }
     
 }
