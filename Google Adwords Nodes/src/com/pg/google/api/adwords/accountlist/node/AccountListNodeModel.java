@@ -3,10 +3,10 @@ package com.pg.google.api.adwords.accountlist.node;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -27,6 +27,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import com.google.api.ads.adwords.axis.v201609.cm.ApiException;
 import com.pg.api.adwords.connector.data.GoogleAdwordsConnection;
 import com.pg.google.api.connector.data.GoogleApiConnectionPortObject;
 
@@ -54,14 +55,19 @@ public class AccountListNodeModel extends NodeModel {
     		throws Exception {
 
     	GoogleApiConnectionPortObject apiConnection = (GoogleApiConnectionPortObject)inObjects[0];
-    	Map<String, String> accountMap = new HashedMap();
+    	Map<String, String> accountMap = new  HashMap<String,String>();
     	
     	try {
     		accountMap = GoogleAdwordsConnection.getCustomerAccounts(apiConnection.getGoogleApiConnection());
     	} catch ( Exception exc ) {
     		LOGGER.error(exc.getMessage());
+    		
+    		if ( exc instanceof ApiException)
+    			LOGGER.error(  ((ApiException)exc).getFaultString() );
+    		
     		throw exc;
     	}
+    	
     	
     	DataTableSpec outSpec = createSpec();
         BufferedDataContainer outContainer = exec.createDataContainer(outSpec);

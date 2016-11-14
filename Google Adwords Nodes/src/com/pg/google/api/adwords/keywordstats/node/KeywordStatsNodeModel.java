@@ -28,14 +28,14 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import com.google.api.ads.adwords.axis.v201603.o.Attribute;
-import com.google.api.ads.adwords.axis.v201603.o.AttributeType;
-import com.google.api.ads.adwords.axis.v201603.o.DoubleAttribute;
-import com.google.api.ads.adwords.axis.v201603.o.LongAttribute;
-import com.google.api.ads.adwords.axis.v201603.o.MoneyAttribute;
-import com.google.api.ads.adwords.axis.v201603.o.StringAttribute;
-import com.google.api.ads.adwords.axis.v201603.o.TargetingIdea;
-import com.google.api.ads.adwords.axis.v201603.o.TargetingIdeaPage;
+import com.google.api.ads.adwords.axis.v201609.o.Attribute;
+import com.google.api.ads.adwords.axis.v201609.o.AttributeType;
+import com.google.api.ads.adwords.axis.v201609.o.DoubleAttribute;
+import com.google.api.ads.adwords.axis.v201609.o.LongAttribute;
+import com.google.api.ads.adwords.axis.v201609.o.MoneyAttribute;
+import com.google.api.ads.adwords.axis.v201609.o.StringAttribute;
+import com.google.api.ads.adwords.axis.v201609.o.TargetingIdea;
+import com.google.api.ads.adwords.axis.v201609.o.TargetingIdeaPage;
 import com.google.api.ads.common.lib.utils.Maps;
 import com.pg.api.adwords.connector.data.GoogleAdwordsConnection;
 import com.pg.google.api.connector.data.GoogleApiConnectionPortObject;
@@ -99,21 +99,19 @@ public class KeywordStatsNodeModel extends NodeModel {
 			DoubleAttribute competition = (DoubleAttribute)data.get(AttributeType.COMPETITION);
 			
 			List<DataCell> cells = new ArrayList<DataCell>(outSpec.getNumColumns());
-
 			
-        	cells.add(new StringCell(keyword.getValue()));
-        	cells.add(new LongCell(averageMonthlySearches.getValue()));
-        	cells.add(new LongCell(averageCPC.getValue().getMicroAmount()));
-        	cells.add(new DoubleCell(competition.getValue()));
-        	
+			String keywordValue = keyword.getValue() == null ? "N/A" : keyword.getValue();
+			Long averageMonthlySearchesValue = averageMonthlySearches.getValue() == null ? 0 : averageMonthlySearches.getValue();
+			Long averageCPCValue = averageCPC.getValue() == null ? 0 : averageCPC.getValue().getMicroAmount();
+			Double competitionValue = competition.getValue() == null ? 0 : competition.getValue();
+			
+        	cells.add(new StringCell(keywordValue));
+        	cells.add(new LongCell(averageMonthlySearchesValue));
+        	cells.add(new LongCell(averageCPCValue));
+        	cells.add(new DoubleCell(competitionValue));
         	
         	outContainer.addRowToTable(new DefaultRow("Row" + row++, cells));
-			/*
-			 * colSpecs.add(new DataColumnSpecCreator("Keyword", StringCell.TYPE).createSpec());
-    	colSpecs.add(new DataColumnSpecCreator("Search Volume", StringCell.TYPE).createSpec());
-    	colSpecs.add(new DataColumnSpecCreator("Average CPC", StringCell.TYPE).createSpec());
-    	colSpecs.add(new DataColumnSpecCreator("Competitive", StringCell.TYPE).createSpec());
-			 */
+			
 			
     	}
 		
