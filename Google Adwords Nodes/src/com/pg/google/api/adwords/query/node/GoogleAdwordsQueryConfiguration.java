@@ -3,7 +3,7 @@ package com.pg.google.api.adwords.query.node;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 
-import com.google.api.ads.adwords.lib.jaxb.v201710.ReportDefinitionReportType;
+import com.google.api.ads.adwords.lib.jaxb.v201806.ReportDefinitionReportType;
 
 public class GoogleAdwordsQueryConfiguration {
 

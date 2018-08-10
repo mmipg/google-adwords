@@ -23,33 +23,33 @@ import org.knime.core.node.ModelContentWO;
 import org.knime.core.node.NodeLogger;
 
 import com.google.api.ads.adwords.axis.factory.AdWordsServices;
-import com.google.api.ads.adwords.lib.jaxb.v201710.DateRange;
-import com.google.api.ads.adwords.lib.jaxb.v201710.ReportDefinitionReportType;
-import com.google.api.ads.adwords.lib.jaxb.v201710.Selector;
-import com.google.api.ads.adwords.axis.v201710.cm.ApiException;
-import com.google.api.ads.adwords.axis.v201710.cm.Paging;
-import com.google.api.ads.adwords.axis.v201710.mcm.ManagedCustomer;
-import com.google.api.ads.adwords.axis.v201710.mcm.ManagedCustomerPage;
-import com.google.api.ads.adwords.axis.v201710.mcm.ManagedCustomerServiceInterface;
-import com.google.api.ads.adwords.axis.v201710.o.AttributeType;
-import com.google.api.ads.adwords.axis.v201710.o.IdeaType;
-import com.google.api.ads.adwords.axis.v201710.o.RelatedToQuerySearchParameter;
-import com.google.api.ads.adwords.axis.v201710.o.RequestType;
-import com.google.api.ads.adwords.axis.v201710.o.SearchParameter;
-import com.google.api.ads.adwords.axis.v201710.o.TargetingIdeaPage;
-import com.google.api.ads.adwords.axis.v201710.o.TargetingIdeaSelector;
-import com.google.api.ads.adwords.axis.v201710.o.TargetingIdeaServiceInterface;
-import com.google.api.ads.adwords.axis.v201710.cm.ReportDefinitionField;
-import com.google.api.ads.adwords.axis.v201710.cm.ReportDefinitionServiceInterface;
+import com.google.api.ads.adwords.lib.jaxb.v201806.DateRange;
+import com.google.api.ads.adwords.lib.jaxb.v201806.ReportDefinitionReportType;
+import com.google.api.ads.adwords.lib.jaxb.v201806.Selector;
+import com.google.api.ads.adwords.axis.v201806.cm.ApiException;
+import com.google.api.ads.adwords.axis.v201806.cm.Paging;
+import com.google.api.ads.adwords.axis.v201806.mcm.ManagedCustomer;
+import com.google.api.ads.adwords.axis.v201806.mcm.ManagedCustomerPage;
+import com.google.api.ads.adwords.axis.v201806.mcm.ManagedCustomerServiceInterface;
+import com.google.api.ads.adwords.axis.v201806.o.AttributeType;
+import com.google.api.ads.adwords.axis.v201806.o.IdeaType;
+import com.google.api.ads.adwords.axis.v201806.o.RelatedToQuerySearchParameter;
+import com.google.api.ads.adwords.axis.v201806.o.RequestType;
+import com.google.api.ads.adwords.axis.v201806.o.SearchParameter;
+import com.google.api.ads.adwords.axis.v201806.o.TargetingIdeaPage;
+import com.google.api.ads.adwords.axis.v201806.o.TargetingIdeaSelector;
+import com.google.api.ads.adwords.axis.v201806.o.TargetingIdeaServiceInterface;
+import com.google.api.ads.adwords.axis.v201806.cm.ReportDefinitionField;
+import com.google.api.ads.adwords.axis.v201806.cm.ReportDefinitionServiceInterface;
 import com.google.api.ads.adwords.lib.client.AdWordsSession;
-import com.google.api.ads.adwords.lib.jaxb.v201710.DownloadFormat;
-import com.google.api.ads.adwords.lib.jaxb.v201710.ReportDefinition;
-import com.google.api.ads.adwords.lib.jaxb.v201710.ReportDefinitionDateRangeType;
+import com.google.api.ads.adwords.lib.jaxb.v201806.DownloadFormat;
+import com.google.api.ads.adwords.lib.jaxb.v201806.ReportDefinition;
+import com.google.api.ads.adwords.lib.jaxb.v201806.ReportDefinitionDateRangeType;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponse;
 import com.google.api.ads.adwords.lib.utils.ReportDownloadResponseException;
 import com.google.api.ads.adwords.lib.utils.ReportException;
-import com.google.api.ads.adwords.lib.utils.v201710.DetailedReportDownloadResponseException;
-import com.google.api.ads.adwords.lib.utils.v201710.ReportDownloader;
+import com.google.api.ads.adwords.lib.utils.v201806.DetailedReportDownloadResponseException;
+import com.google.api.ads.adwords.lib.utils.v201806.ReportDownloader;
 import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
 import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.util.Joiner;
@@ -149,7 +149,7 @@ public class GoogleAdwordsConnection {
 		
 		ManagedCustomerServiceInterface customerInterface = new AdWordsServices()
 																	.get(adwords, ManagedCustomerServiceInterface.class);
-		com.google.api.ads.adwords.axis.v201710.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201710.cm.Selector();
+		com.google.api.ads.adwords.axis.v201806.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201806.cm.Selector();
 		mcSelector.setFields(new String[] {"CustomerId", "Name", "CanManageClients"} );
 		
 		ManagedCustomerPage page = customerInterface.get(mcSelector);
@@ -284,7 +284,7 @@ public class GoogleAdwordsConnection {
 		return fetchReport(reportType, fields, this.customerId, startDate, endDate);
 	}
 	
-	public String[] getReportFields(com.google.api.ads.adwords.axis.v201710.cm.ReportDefinitionReportType reportType) {
+	public String[] getReportFields(com.google.api.ads.adwords.axis.v201806.cm.ReportDefinitionReportType reportType) {
 		
 		
 		String[] fieldNames = new String[0];

@@ -27,7 +27,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import com.google.api.ads.adwords.axis.v201710.cm.ApiException;
+import com.google.api.ads.adwords.axis.v201806.cm.ApiException;
 import com.pg.api.adwords.connector.data.GoogleAdwordsConnection;
 import com.pg.google.api.connector.data.GoogleApiConnectionPortObject;
 
