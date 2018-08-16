@@ -25,6 +25,7 @@ import org.knime.core.node.NodeLogger;
 import com.google.api.ads.adwords.axis.factory.AdWordsServices;
 import com.google.api.ads.adwords.lib.jaxb.v201806.DateRange;
 import com.google.api.ads.adwords.lib.jaxb.v201806.ReportDefinitionReportType;
+import com.google.api.ads.adwords.axis.utils.v201806.SelectorBuilder;
 import com.google.api.ads.adwords.lib.jaxb.v201806.Selector;
 import com.google.api.ads.adwords.axis.v201806.cm.ApiException;
 import com.google.api.ads.adwords.axis.v201806.cm.Paging;
@@ -64,6 +65,8 @@ public class GoogleAdwordsConnection {
 	private GoogleApiConnection connection;
 	private AdWordsSession adwords;
 	private String customerId;
+	
+	private static final int PAGE_SIZE = 500;
 	
 	private ExecutionContext exeContext;
 
@@ -149,17 +152,36 @@ public class GoogleAdwordsConnection {
 		
 		ManagedCustomerServiceInterface customerInterface = new AdWordsServices()
 																	.get(adwords, ManagedCustomerServiceInterface.class);
-		com.google.api.ads.adwords.axis.v201806.cm.Selector mcSelector = new com.google.api.ads.adwords.axis.v201806.cm.Selector();
-		mcSelector.setFields(new String[] {"CustomerId", "Name", "CanManageClients"} );
+		// Create selector builder.
+	    int offset = 0;
+	    SelectorBuilder selectorBuilder =
+	        new SelectorBuilder()
+	            .fields("CustomerId", "Name", "CanManageClients")
+	            .offset(offset)
+	            .limit(PAGE_SIZE);
+
+	    ManagedCustomerPage page;
+	    do {
+	    	LOGGER.info("Querying Accepted list with offset: "+offset);
+			page = customerInterface.get(selectorBuilder.build());
+			
+			if ((page != null) && (page.getEntries() != null)) {
+				for (ManagedCustomer customer : page.getEntries()) {
+					 // Ignore other MMCs
+					 if ( customer.getCanManageClients() ) continue;
+					 String name = customer.getName();
+					 if ((name == null) || ("".equals(name))) continue;
+					  map.put(customer.getName(), customer.getCustomerId().toString());   
+				 }
+			}
+			
+			offset += PAGE_SIZE;
+			selectorBuilder = selectorBuilder.increaseOffsetBy(PAGE_SIZE);
+	    	
+	    } while ((page != null) && (offset < page.getTotalNumEntries()));
 		
-		ManagedCustomerPage page = customerInterface.get(mcSelector);
-		 for (ManagedCustomer customer : page.getEntries()) {
-			 // Ignore other MMCs
-			 if ( customer.getCanManageClients() ) continue;
-			 if ( "".equals(customer.getName()) ) continue;
-			  map.put(customer.getName(), customer.getCustomerId().toString());   
-		 }
-		
+	    LOGGER.info("Result - total found: "+((page!=null) ? ""+page.getTotalNumEntries() : "Page null"));
+	    		
 		return map;
 	}
 	
